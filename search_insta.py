@@ -6,6 +6,9 @@ import sys
 import random
 import banner
 
+#CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+#PROXY_FILE = os.path.join(CURRENT_DIR, 'proxies.txt')
+
 RESET = "\033[0m"
 GREEN = "\033[32m"
 BOLD = "\033[1m"
@@ -14,9 +17,12 @@ VERMELHO = "\033[91m"
 AMARELO_BRILHANTE = "\033[93m"
 
 def apagando_proxy_velho(file):
-    if os.path.exists("proxies.txt"):
+    if os.path.exists(file):
         os.remove(file)
         sleep(3)
+    elif not os.path.exists(file):
+        pass
+
 
 def gerando_proxies(file):
     url = "https://api.proxyscrape.com/v3/free-proxy-list/get?request=displayproxies&protocol=http&proxy_format=protocolipport&format=json&timeout=20000"
@@ -71,7 +77,7 @@ def login_instagram(username, password):
         response = session.post(login_url, data=payload, headers=headers)
         
         if response.status_code == 200 and response.json().get('authenticated'):
-            print("Login bem-sucedido!")
+            print("Login bem-sucedido!\n")
             session_id = session.cookies.get('sessionid')
             csrftoken = session.cookies.get('csrftoken')
             return session_id, csrftoken
